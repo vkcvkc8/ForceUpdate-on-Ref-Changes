@@ -1,33 +1,42 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-function useForceUpdate() {
-  const [, setState] = useState(); // Using a dummy state variable to trigger re-renders
-
-  const forceUpdate = useCallback(() => {
-    setState({});
-  }, []);
-
-  return forceUpdate;
+function Home() {
+  return <h2>Home Page</h2>;
 }
 
-export default function Counter() {
-  const ref = useRef(0);
-  const forceUpdate = useForceUpdate();
+function About() {
+  return <h2>About Page</h2>;
+}
 
-  useEffect(() => {
-    // This effect will run whenever ref.current changes.
-    console.log(`Effect triggered: ref.current = ${ref.current}`);
-  }, [ref.current]); // Adding ref.current to the dependency array
+function Contact() {
+  return <h2>Contact Page</h2>;
+}
 
-  function handleClick() {
-    ref.current = ref.current + 1;
-    alert(`You clicked ${ref.current} times`);
-    forceUpdate(); // Trigger a re-render
-  }
-
+export default function App() {
   return (
-    <div>
-      <button onClick={handleClick}>Click me! {ref.current}</button>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
   );
 }
